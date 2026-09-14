@@ -50,20 +50,33 @@ class AndroidFocusBridge {
     }
   }
 
+  Future<bool> isEssentialAvailable(String target) async {
+    try {
+      return await _channel.invokeMethod<bool>('isEssentialAvailable', {
+            'target': target,
+          }) ??
+          false;
+    } on PlatformException {
+      return false;
+    } on MissingPluginException {
+      return false;
+    }
+  }
+
   Future<({AppUpdate? update, String currentVersion})> checkForUpdate() async {
     try {
       final response = await _channel.invokeMapMethod<Object?, Object?>(
         'checkForUpdate',
       );
-      final current = response?['currentVersion'] as String? ?? '0.1.0';
+      final current = response?['currentVersion'] as String? ?? '0.2.0';
       if (response?['available'] != true) {
         return (update: null, currentVersion: current);
       }
       return (update: AppUpdate.fromMap(response!), currentVersion: current);
     } on PlatformException {
-      return (update: null, currentVersion: '0.1.0');
+      return (update: null, currentVersion: '0.2.0');
     } on MissingPluginException {
-      return (update: null, currentVersion: '0.1.0');
+      return (update: null, currentVersion: '0.2.0');
     }
   }
 

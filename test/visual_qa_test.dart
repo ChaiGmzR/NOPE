@@ -44,7 +44,11 @@ void main() {
 
   testWidgets('home portrait visual', (tester) async {
     await tester.binding.setSurfaceSize(const Size(390, 844));
-    SharedPreferences.setMockInitialValues({'onboardingComplete': true});
+    SharedPreferences.setMockInitialValues({
+      'onboardingComplete': true,
+      'clockStyle': ClockStyle.hourglass.index,
+      'paletteIndex': 2,
+    });
     final controller = FocusController(
       await StorageService.create(),
       AndroidFocusBridge(),
@@ -60,9 +64,13 @@ void main() {
     controller.dispose();
   });
 
-  testWidgets('lock and puzzle portrait visuals', (tester) async {
+  testWidgets('lock portrait visual and puzzle layout', (tester) async {
     await tester.binding.setSurfaceSize(const Size(390, 844));
-    SharedPreferences.setMockInitialValues({'onboardingComplete': true});
+    SharedPreferences.setMockInitialValues({
+      'onboardingComplete': true,
+      'clockStyle': ClockStyle.hourglass.index,
+      'paletteIndex': 2,
+    });
     final controller = FocusController(
       await StorageService.create(),
       AndroidFocusBridge(),
@@ -79,10 +87,28 @@ void main() {
 
     await tester.tap(find.text('NECESITO UNA PAUSA'));
     await tester.pumpAndSettle();
-    await expectLater(
-      find.byType(MaterialApp),
-      matchesGoldenFile('goldens/puzzle_gate.png'),
+    expect(find.textContaining('/ 10'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    controller.dispose();
+  });
+
+  testWidgets('pause keeps focus shell visible', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    SharedPreferences.setMockInitialValues({'onboardingComplete': true});
+    final controller = FocusController(
+      await StorageService.create(),
+      AndroidFocusBridge(),
     );
+    await controller.initialize();
+    await controller.startFocus(const Duration(minutes: 45));
+    await controller.pauseAfterPuzzles();
+    await tester.pumpWidget(NopeApp(controller: controller));
+    await tester.pump();
+
+    expect(find.text('PAUSA ACTIVA'), findsOneWidget);
+    expect(find.text('Hoy'), findsNothing);
+    expect(find.text('VOLVER AL FOCO AHORA'), findsOneWidget);
+    expect(tester.takeException(), isNull);
     controller.dispose();
   });
 }

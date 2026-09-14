@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../controllers/focus_controller.dart';
 import '../core/formatters.dart';
 import '../models/focus_schedule.dart';
+import '../theme/nope_theme.dart';
 import '../widgets/nope_components.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -50,6 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 _FocusHero(
                   minutes: selectedMinutes,
+                  background: NopeTheme.focusBackground(
+                    controller.paletteIndex,
+                  ),
                   onStart: () => _start(context),
                 ),
                 const SizedBox(height: 24),
@@ -150,17 +154,21 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _FocusHero extends StatelessWidget {
-  const _FocusHero({required this.minutes, required this.onStart});
+  const _FocusHero({
+    required this.minutes,
+    required this.background,
+    required this.onStart,
+  });
   final int minutes;
+  final Color background;
   final VoidCallback onStart;
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     return Container(
       height: 330,
       decoration: BoxDecoration(
-        color: scheme.onSurface,
+        color: background,
         borderRadius: BorderRadius.circular(32),
       ),
       clipBehavior: Clip.antiAlias,
@@ -169,7 +177,7 @@ class _FocusHero extends StatelessWidget {
           Positioned.fill(
             child: CustomPaint(
               painter: _OrbitPainter(
-                color: scheme.surface.withValues(alpha: .16),
+                color: NopeTheme.focusForeground.withValues(alpha: .16),
               ),
             ),
           ),
@@ -183,14 +191,14 @@ class _FocusHero extends StatelessWidget {
                 Text(
                   '$minutes',
                   style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                    color: scheme.surface,
+                    color: NopeTheme.focusForeground,
                     fontSize: 92,
                   ),
                 ),
                 Text(
                   'MINUTOS SIN RUIDO',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: scheme.surface.withValues(alpha: .72),
+                    color: NopeTheme.focusForeground.withValues(alpha: .72),
                     letterSpacing: 1.6,
                   ),
                 ),
@@ -198,8 +206,8 @@ class _FocusHero extends StatelessWidget {
                 FilledButton(
                   onPressed: onStart,
                   style: FilledButton.styleFrom(
-                    backgroundColor: scheme.surface,
-                    foregroundColor: scheme.onSurface,
+                    backgroundColor: NopeTheme.focusForeground,
+                    foregroundColor: background,
                     minimumSize: const Size(double.infinity, 56),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(17),
@@ -247,16 +255,14 @@ class _DurationOption extends StatelessWidget {
         height: 58,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: selected ? scheme.onSurface : scheme.surfaceContainer,
+          color: selected ? scheme.primary : scheme.surfaceContainer,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: selected ? scheme.onSurface : scheme.outline,
-          ),
+          border: Border.all(color: selected ? scheme.primary : scheme.outline),
         ),
         child: Text(
           '$value',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: selected ? scheme.surface : scheme.onSurface,
+            color: selected ? scheme.onPrimary : scheme.onSurface,
           ),
         ),
       ),

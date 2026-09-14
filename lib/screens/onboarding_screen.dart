@@ -67,7 +67,8 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                     const _OnboardingStep(
                       number: '03',
-                      text: 'Si quieres salir, primero resuelve cinco retos.',
+                      text:
+                          'Si necesitas una pausa, primero resuelve diez retos.',
                     ),
                     const SizedBox(height: 24),
                     NopeButton(

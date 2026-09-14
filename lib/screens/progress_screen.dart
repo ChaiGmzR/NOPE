@@ -268,7 +268,7 @@ class _CalendarDay extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: filled
-              ? scheme.onSurface
+              ? scheme.primary
               : partial
               ? scheme.surfaceContainerHighest
               : Colors.transparent,
@@ -284,7 +284,7 @@ class _CalendarDay extends StatelessWidget {
         child: Text(
           '$day',
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            color: filled ? scheme.surface : scheme.onSurface,
+            color: filled ? scheme.onPrimary : scheme.onSurface,
             decoration: kind == _DayKind.missed
                 ? TextDecoration.lineThrough
                 : null,
@@ -308,7 +308,7 @@ class _LegendDot extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: kind == _DayKind.complete
-            ? Theme.of(context).colorScheme.onSurface
+            ? Theme.of(context).colorScheme.primary
             : Theme.of(context).colorScheme.surfaceContainerHighest,
         border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
@@ -377,7 +377,7 @@ class _WeeklyRhythm extends StatelessWidget {
                           height: height,
                           decoration: BoxDecoration(
                             color: value >= .8
-                                ? Theme.of(context).colorScheme.onSurface
+                                ? Theme.of(context).colorScheme.primary
                                 : Theme.of(
                                     context,
                                   ).colorScheme.surfaceContainerHighest,

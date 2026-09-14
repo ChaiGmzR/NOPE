@@ -19,6 +19,7 @@ class FocusController extends ChangeNotifier with WidgetsBindingObserver {
 
   bool onboardingComplete = false;
   bool accessibilityEnabled = false;
+  bool authenticatorAvailable = false;
   bool darkMode = false;
   int paletteIndex = 0;
   ClockStyle clockStyle = ClockStyle.digital;
@@ -31,7 +32,7 @@ class FocusController extends ChangeNotifier with WidgetsBindingObserver {
   Map<String, int> completedMinutes = {};
   Map<String, int> interruptions = {};
   AppUpdate? availableUpdate;
-  String currentVersion = '0.1.0';
+  String currentVersion = '0.2.0';
   String? updateMessage;
   bool checkingForUpdate = false;
   bool installingUpdate = false;
@@ -53,6 +54,7 @@ class FocusController extends ChangeNotifier with WidgetsBindingObserver {
   bool get isFocusActive => activeEnd != null;
   bool get isPaused => pausedUntil != null && pausedUntil!.isAfter(now);
   bool get shouldShowLock => isFocusActive && !isPaused;
+  bool get shouldShowFocusScreen => isFocusActive;
 
   Duration get remaining {
     final end = activeEnd;
@@ -222,7 +224,12 @@ class FocusController extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   Future<void> refreshPermission() async {
-    accessibilityEnabled = await _bridge.isAccessibilityEnabled();
+    final states = await Future.wait<bool>([
+      _bridge.isAccessibilityEnabled(),
+      _bridge.isEssentialAvailable('authenticator'),
+    ]);
+    accessibilityEnabled = states[0];
+    authenticatorAvailable = states[1];
     notifyListeners();
   }
 

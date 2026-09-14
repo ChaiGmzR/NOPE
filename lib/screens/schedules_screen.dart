@@ -290,12 +290,12 @@ class _ScheduleEditorSheetState extends State<ScheduleEditorSheet> {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: selected
-                        ? Theme.of(context).colorScheme.onSurface
+                        ? Theme.of(context).colorScheme.primary
                         : Colors.transparent,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: selected
-                          ? Theme.of(context).colorScheme.onSurface
+                          ? Theme.of(context).colorScheme.primary
                           : Theme.of(context).colorScheme.outline,
                     ),
                   ),
@@ -303,7 +303,7 @@ class _ScheduleEditorSheetState extends State<ScheduleEditorSheet> {
                     weekdayShort[index],
                     style: TextStyle(
                       color: selected
-                          ? Theme.of(context).colorScheme.surface
+                          ? Theme.of(context).colorScheme.onPrimary
                           : Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.w800,
                     ),

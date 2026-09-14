@@ -44,46 +44,109 @@ class SettingsScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 14),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 240),
+                        height: 68,
+                        padding: const EdgeInsets.symmetric(horizontal: 18),
+                        decoration: BoxDecoration(
+                          color: NopeTheme.focusBackground(
+                            controller.paletteIndex,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          children: [
+                            const Text(
+                              'NOPE',
+                              style: TextStyle(
+                                color: NopeTheme.focusForeground,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: -1,
+                              ),
+                            ),
+                            const Spacer(),
+                            Text(
+                              NopeTheme.paletteNames[controller.paletteIndex],
+                              style: const TextStyle(
+                                color: NopeTheme.focusForeground,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
                       Row(
                         children: List.generate(NopeTheme.palettes.length, (
                           index,
                         ) {
                           final selected = controller.paletteIndex == index;
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 14),
+                          return Expanded(
                             child: InkWell(
                               onTap: () => controller.setPalette(index),
-                              customBorder: const CircleBorder(),
-                              child: Container(
-                                width: 44,
-                                height: 44,
-                                decoration: BoxDecoration(
-                                  color: NopeTheme.palettes[index],
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.surface,
-                                    width: 4,
-                                  ),
-                                  boxShadow: selected
-                                      ? [
-                                          BoxShadow(
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.onSurface,
-                                            spreadRadius: 2,
-                                          ),
-                                        ]
-                                      : null,
+                              borderRadius: BorderRadius.circular(12),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
                                 ),
-                                child: selected
-                                    ? const Icon(
-                                        Icons.check,
-                                        color: Colors.white,
-                                        size: 19,
-                                      )
-                                    : null,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: 42,
+                                      height: 42,
+                                      decoration: BoxDecoration(
+                                        color: NopeTheme.palettes[index],
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.surface,
+                                          width: 4,
+                                        ),
+                                        boxShadow: selected
+                                            ? [
+                                                BoxShadow(
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.primary,
+                                                  spreadRadius: 2,
+                                                ),
+                                              ]
+                                            : null,
+                                      ),
+                                      child: selected
+                                          ? const Icon(
+                                              Icons.check,
+                                              color: Colors.white,
+                                              size: 18,
+                                            )
+                                          : null,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      NopeTheme.paletteNames[index],
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall
+                                          ?.copyWith(
+                                            color: selected
+                                                ? Theme.of(
+                                                    context,
+                                                  ).colorScheme.primary
+                                                : Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurfaceVariant,
+                                            fontWeight: selected
+                                                ? FontWeight.w800
+                                                : FontWeight.w600,
+                                          ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -124,26 +187,35 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const _SettingsCard(
+                _SettingsCard(
                   title: 'SIEMPRE DISPONIBLES',
                   child: Column(
                     children: [
-                      _EssentialRow(
+                      const _EssentialRow(
                         icon: Icons.phone_outlined,
                         title: 'Teléfono',
                         subtitle: 'Llamadas y emergencias',
                       ),
-                      Divider(height: 1),
-                      _EssentialRow(
+                      const Divider(height: 1),
+                      const _EssentialRow(
                         icon: Icons.chat_bubble_outline_rounded,
                         title: 'SMS',
                         subtitle: 'Mensajes del sistema',
                       ),
-                      Divider(height: 1),
-                      _EssentialRow(
+                      const Divider(height: 1),
+                      const _EssentialRow(
                         icon: Icons.forum_outlined,
                         title: 'WhatsApp',
                         subtitle: 'Personal y Business',
+                      ),
+                      const Divider(height: 1),
+                      _EssentialRow(
+                        icon: Icons.security_outlined,
+                        title: 'Authenticator',
+                        subtitle: controller.authenticatorAvailable
+                            ? 'Detectado y disponible'
+                            : 'No instalado',
+                        active: controller.authenticatorAvailable,
                       ),
                     ],
                   ),
@@ -153,10 +225,11 @@ class SettingsScreen extends StatelessWidget {
                   title: 'FRICCIÓN INTENCIONAL',
                   child: ListTile(
                     contentPadding: EdgeInsets.zero,
-                    leading: NumberBadge('05'),
-                    title: Text('Cinco retos por cada pausa'),
+                    leading: NumberBadge('10'),
+                    title: Text('Diez retos por cada pausa'),
                     subtitle: Text(
-                      'Cada tanda es diferente y concede cinco minutos. '
+                      'Incluye Sudoku, sopa de letras y une los puntos. Cada '
+                      'tanda concede cinco minutos. '
                       'Al volver al bloqueo, se reinicia el requisito.',
                     ),
                   ),
@@ -235,12 +308,12 @@ class _ProtectionSettings extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: controller.accessibilityEnabled
-            ? scheme.onSurface
+            ? scheme.primary
             : scheme.surfaceContainer,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: controller.accessibilityEnabled
-              ? scheme.onSurface
+              ? scheme.primary
               : scheme.outlineVariant,
         ),
       ),
@@ -254,7 +327,7 @@ class _ProtectionSettings extends StatelessWidget {
                     ? Icons.shield_rounded
                     : Icons.shield_outlined,
                 color: controller.accessibilityEnabled
-                    ? scheme.surface
+                    ? scheme.onPrimary
                     : scheme.onSurface,
               ),
               const SizedBox(width: 12),
@@ -265,7 +338,7 @@ class _ProtectionSettings extends StatelessWidget {
                       : 'Protección desactivada',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: controller.accessibilityEnabled
-                        ? scheme.surface
+                        ? scheme.onPrimary
                         : scheme.onSurface,
                   ),
                 ),
@@ -278,7 +351,7 @@ class _ProtectionSettings extends StatelessWidget {
             'el teléfono a la pantalla de foco. No inspecciona contenido.',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: controller.accessibilityEnabled
-                  ? scheme.surface.withValues(alpha: .72)
+                  ? scheme.onPrimary.withValues(alpha: .72)
                   : scheme.onSurfaceVariant,
             ),
           ),
@@ -287,11 +360,11 @@ class _ProtectionSettings extends StatelessWidget {
             onPressed: controller.openAccessibilitySettings,
             style: FilledButton.styleFrom(
               backgroundColor: controller.accessibilityEnabled
-                  ? scheme.surface
-                  : scheme.onSurface,
+                  ? scheme.onPrimary
+                  : scheme.primary,
               foregroundColor: controller.accessibilityEnabled
-                  ? scheme.onSurface
-                  : scheme.surface,
+                  ? scheme.primary
+                  : scheme.onPrimary,
             ),
             child: Text(
               controller.accessibilityEnabled ? 'REVISAR PERMISO' : 'ACTIVAR',
@@ -352,7 +425,7 @@ class _ClockChoice extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: selected
-              ? Theme.of(context).colorScheme.onSurface
+              ? Theme.of(context).colorScheme.primary
               : Colors.transparent,
           border: Border.all(color: Theme.of(context).colorScheme.outline),
         ),
@@ -360,7 +433,7 @@ class _ClockChoice extends StatelessWidget {
             ? Icon(
                 Icons.check,
                 size: 15,
-                color: Theme.of(context).colorScheme.surface,
+                color: Theme.of(context).colorScheme.onPrimary,
               )
             : null,
       ),
@@ -373,10 +446,12 @@ class _EssentialRow extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.subtitle,
+    this.active = true,
   });
   final IconData icon;
   final String title;
   final String subtitle;
+  final bool active;
 
   @override
   Widget build(BuildContext context) {
@@ -385,7 +460,13 @@ class _EssentialRow extends StatelessWidget {
       leading: Icon(icon),
       title: Text(title),
       subtitle: Text(subtitle),
-      trailing: const Icon(Icons.check_rounded, size: 20),
+      trailing: Icon(
+        active ? Icons.check_rounded : Icons.remove_rounded,
+        size: 20,
+        color: active
+            ? Theme.of(context).colorScheme.primary
+            : Theme.of(context).colorScheme.onSurfaceVariant,
+      ),
     );
   }
 }

@@ -6,9 +6,22 @@ class NopeTheme {
     Color(0xFF17324D),
     Color(0xFF1E4638),
   ];
+  static const paletteNames = ['Monocromo', 'Azul tinta', 'Bosque'];
+  static const focusBackgrounds = <Color>[
+    Color(0xFF141918),
+    Color(0xFF0D263B),
+    Color(0xFF103329),
+  ];
+  static const focusForeground = Color(0xFFF7F7F2);
+
+  static Color focusBackground(int paletteIndex) =>
+      focusBackgrounds[paletteIndex.clamp(0, focusBackgrounds.length - 1)];
 
   static ThemeData build({required bool dark, required int paletteIndex}) {
     final seed = palettes[paletteIndex.clamp(0, palettes.length - 1)];
+    final accent = paletteIndex == 0
+        ? (dark ? const Color(0xFFE7E9E5) : seed)
+        : (dark ? Color.lerp(seed, Colors.white, .22)! : seed);
     final brightness = dark ? Brightness.dark : Brightness.light;
     final scheme =
         ColorScheme.fromSeed(
@@ -16,8 +29,10 @@ class NopeTheme {
           brightness: brightness,
           surface: dark ? const Color(0xFF111111) : const Color(0xFFF7F7F4),
         ).copyWith(
-          primary: dark ? const Color(0xFFF4F4EF) : seed,
-          onPrimary: dark ? const Color(0xFF111111) : Colors.white,
+          primary: accent,
+          onPrimary: accent.computeLuminance() > .48
+              ? const Color(0xFF101312)
+              : Colors.white,
           surfaceContainer: dark
               ? const Color(0xFF1B1B1B)
               : const Color(0xFFFFFFFF),
@@ -82,12 +97,12 @@ class NopeTheme {
         height: 72,
         elevation: 0,
         backgroundColor: scheme.surface,
-        indicatorColor: scheme.onSurface,
+        indicatorColor: scheme.primary,
         iconTheme: WidgetStateProperty.resolveWith(
           (states) => IconThemeData(
             size: 22,
             color: states.contains(WidgetState.selected)
-                ? scheme.surface
+                ? scheme.onPrimary
                 : scheme.onSurfaceVariant,
           ),
         ),

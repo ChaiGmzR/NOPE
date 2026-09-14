@@ -12,9 +12,10 @@ rutinas semanales y mantiene disponibles Teléfono, SMS y WhatsApp.
 - Horarios semanales editables, incluidos periodos que cruzan medianoche.
 - Bloqueo de aplicaciones mediante un `AccessibilityService` nativo en Kotlin.
 - Lista esencial dinámica para el marcador, la app SMS predeterminada, el
-  teclado, WhatsApp y WhatsApp Business.
+  teclado, WhatsApp, WhatsApp Business y aplicaciones Authenticator detectadas.
 - Pantalla de foco con reloj digital, analógico o de arena.
-- Cinco retos diferentes antes de conceder una pausa de cinco minutos.
+- Diez retos mezclados, incluidos Sudoku, sopa de letras y une los puntos,
+  antes de conceder una pausa de cinco minutos.
 - Nueva tanda de retos después de cada regreso al bloqueo.
 - Calendario de cumplimiento, racha, horas protegidas e interrupciones.
 - Apariencia clara/oscura y tres tintas seleccionables.

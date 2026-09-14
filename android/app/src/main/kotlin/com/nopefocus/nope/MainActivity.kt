@@ -24,6 +24,17 @@ class MainActivity : FlutterActivity() {
         private const val PREFS = "nope_focus"
         private const val LATEST_RELEASE_URL =
             "https://api.github.com/repos/ChaiGmzR/NOPE/releases/latest"
+        private val AUTHENTICATOR_PACKAGES = listOf(
+            "com.google.android.apps.authenticator2",
+            "com.azure.authenticator",
+            "com.authy.authy",
+            "com.twofasapp",
+            "com.beemdevelopment.aegis",
+            "com.bitwarden.authenticator",
+            "com.duosecurity.duomobile",
+            "com.okta.android.auth",
+            "org.fedorahosted.freeotp",
+        )
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -47,6 +58,12 @@ class MainActivity : FlutterActivity() {
                     }
                     "launchEssential" -> {
                         result.success(launchEssential(call.argument<String>("target") ?: ""))
+                    }
+                    "isEssentialAvailable" -> {
+                        val target = call.argument<String>("target") ?: ""
+                        result.success(
+                            target != "authenticator" || findAuthenticatorIntent() != null,
+                        )
                     }
                     "checkForUpdate" -> checkForUpdate(result)
                     "downloadAndInstallUpdate" -> downloadAndInstallUpdate(
@@ -73,6 +90,7 @@ class MainActivity : FlutterActivity() {
             "sms" -> Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"))
             "whatsapp" -> packageManager.getLaunchIntentForPackage("com.whatsapp")
                 ?: packageManager.getLaunchIntentForPackage("com.whatsapp.w4b")
+            "authenticator" -> findAuthenticatorIntent()
             else -> null
         } ?: return false
 
@@ -83,6 +101,13 @@ class MainActivity : FlutterActivity() {
         } catch (_: Exception) {
             false
         }
+    }
+
+    private fun findAuthenticatorIntent(): Intent? {
+        for (authenticatorPackage in AUTHENTICATOR_PACKAGES) {
+            packageManager.getLaunchIntentForPackage(authenticatorPackage)?.let { return it }
+        }
+        return null
     }
 
     private fun checkForUpdate(result: MethodChannel.Result) {
@@ -263,5 +288,5 @@ class MainActivity : FlutterActivity() {
 
     @Suppress("DEPRECATION")
     private val appVersion: String
-        get() = packageManager.getPackageInfo(packageName, 0).versionName ?: "0.1.0"
+        get() = packageManager.getPackageInfo(packageName, 0).versionName ?: "0.2.0"
 }

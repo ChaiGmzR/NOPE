@@ -53,7 +53,7 @@ class _AppRootState extends State<AppRoot> {
       duration: const Duration(milliseconds: 360),
       switchInCurve: Curves.easeOutCubic,
       switchOutCurve: Curves.easeInCubic,
-      child: controller.shouldShowLock
+      child: controller.shouldShowFocusScreen
           ? FocusLockScreen(
               key: ValueKey(controller.activeEnd?.millisecondsSinceEpoch),
               controller: controller,
@@ -67,7 +67,7 @@ class _AppRootState extends State<AppRoot> {
     if (update == null ||
         dialogOpen ||
         promptedVersion == update.latestVersion ||
-        controller.shouldShowLock ||
+        controller.shouldShowFocusScreen ||
         !controller.onboardingComplete) {
       return;
     }

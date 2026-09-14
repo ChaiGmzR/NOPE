@@ -103,13 +103,21 @@ class BlockingAccessibilityService : AccessibilityService() {
             "com.google.android.permissioncontroller",
             "com.android.packageinstaller",
             "com.google.android.packageinstaller",
+            "com.google.android.apps.authenticator2",
+            "com.azure.authenticator",
+            "com.authy.authy",
+            "com.twofasapp",
+            "com.beemdevelopment.aegis",
+            "com.bitwarden.authenticator",
+            "com.duosecurity.duomobile",
+            "com.okta.android.auth",
+            "org.fedorahosted.freeotp",
         )
 
         fun addResolved(intent: Intent) {
             packageManager.resolveActivity(intent, 0)?.activityInfo?.packageName?.let(packages::add)
         }
 
-        addResolved(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME))
         addResolved(Intent(Intent.ACTION_DIAL))
         addResolved(Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:")))
         Telephony.Sms.getDefaultSmsPackage(this)?.let(packages::add)

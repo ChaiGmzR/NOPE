@@ -64,6 +64,15 @@
     <queries>
         <package android:name="com.whatsapp" />
         <package android:name="com.whatsapp.w4b" />
+        <package android:name="com.google.android.apps.authenticator2" />
+        <package android:name="com.azure.authenticator" />
+        <package android:name="com.authy.authy" />
+        <package android:name="com.twofasapp" />
+        <package android:name="com.beemdevelopment.aegis" />
+        <package android:name="com.bitwarden.authenticator" />
+        <package android:name="com.duosecurity.duomobile" />
+        <package android:name="com.okta.android.auth" />
+        <package android:name="org.fedorahosted.freeotp" />
         <intent>
             <action android:name="android.intent.action.DIAL" />
         </intent>

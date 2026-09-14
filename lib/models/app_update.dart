@@ -15,7 +15,7 @@ class AppUpdate {
 
   factory AppUpdate.fromMap(Map<Object?, Object?> map) {
     return AppUpdate(
-      currentVersion: map['currentVersion'] as String? ?? '0.1.0',
+      currentVersion: map['currentVersion'] as String? ?? '0.2.0',
       latestVersion: map['latestVersion'] as String? ?? '',
       downloadUrl: map['downloadUrl'] as String? ?? '',
       notes: map['notes'] as String? ?? '',

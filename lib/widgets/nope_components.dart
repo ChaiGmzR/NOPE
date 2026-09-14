@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/nope_theme.dart';
+
 class NopeWordmark extends StatelessWidget {
   const NopeWordmark({super.key, this.inverse = false, this.compact = false});
 
@@ -9,7 +11,7 @@ class NopeWordmark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = inverse
-        ? Theme.of(context).colorScheme.surface
+        ? NopeTheme.focusForeground
         : Theme.of(context).colorScheme.onSurface;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,13 +142,13 @@ class StatusPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
       decoration: BoxDecoration(
-        color: active ? scheme.onSurface : scheme.surfaceContainerHighest,
+        color: active ? scheme.primary : scheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(99),
       ),
       child: Text(
         label.toUpperCase(),
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: active ? scheme.surface : scheme.onSurfaceVariant,
+          color: active ? scheme.onPrimary : scheme.onSurfaceVariant,
           fontWeight: FontWeight.w800,
           letterSpacing: .8,
         ),
@@ -167,12 +169,12 @@ class NumberBadge extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Theme.of(context).colorScheme.onSurface,
+        color: Theme.of(context).colorScheme.primary,
       ),
       child: Text(
         value,
         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.onPrimary,
         ),
       ),
     );
