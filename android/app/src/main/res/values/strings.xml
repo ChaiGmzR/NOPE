@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NOPE</string>
+    <string name="accessibility_description">Detecta la aplicación visible para aplicar únicamente los horarios de enfoque que tú configuras. NOPE no lee ni almacena el contenido de tu pantalla.</string>
+</resources>
